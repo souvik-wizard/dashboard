@@ -9,7 +9,7 @@ const Dashboard = () => {
   const downloadReportHandler = () => {};
 
   return (
-    <div className="w-full px-8">
+    <div className="w-full px-12">
       <div className="flex justify-between py-8 border-b">
         <h1 className="text-2xl font-bold ">Reports</h1>
         <button
