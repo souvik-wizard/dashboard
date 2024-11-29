@@ -1,4 +1,6 @@
 import React from "react";
+import Image from "next/image";
+import { Tooltip } from "react-tooltip";
 
 type Props = {};
 
@@ -30,7 +32,7 @@ const data: { metrics: Metrics }[] = [
 
 interface MetricMapping {
   label: string;
-  key: keyof Metrics;
+  key: keyof Metrics | "knowledge_gain";
   isNested?: boolean;
   format?: (value: any) => string;
   graph?: string;
@@ -64,6 +66,12 @@ const metricMappings: MetricMapping[] = [
     format: (value: number) => `${value}%`,
     graph: "/Graph.png",
   },
+  {
+    label: "Knowledge Gain",
+    key: "knowledge_gain",
+    format: (value: number) => `${value >= 0 ? "+" : ""}${value}%`,
+    graph: "/Graph.png",
+  },
 ];
 
 const Metrics = (props: Props) => {
@@ -71,12 +79,22 @@ const Metrics = (props: Props) => {
 
   if (!metrics) return null;
 
+  const knowledgeGain =
+    metrics.current_knowledge_percentage -
+    metrics.starting_knowledge_percentage;
+
   return (
-    <div className="bg-white grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 w-full">
+    <div className="bg-white grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
       {metricMappings.map((metric) => {
-        const rawValue = metric.isNested
-          ? metrics[metric.key as "active_users"]
-          : metrics[metric.key];
+        let rawValue;
+
+        if (metric.key === "knowledge_gain") {
+          rawValue = knowledgeGain;
+        } else if (metric.isNested) {
+          rawValue = metrics[metric.key as "active_users"];
+        } else {
+          rawValue = metrics[metric.key as keyof Metrics];
+        }
 
         const value = metric.format
           ? metric.format(rawValue)
@@ -85,20 +103,44 @@ const Metrics = (props: Props) => {
         return (
           <div
             key={metric.key}
-            className="rounded-[20px] p-6 shadow-xl flex flex-col justify-between"
+            className="rounded-[20px] p-4 shadow-[0_2px_20px_rgba(0,0,0,0.08)] flex flex-col justify-start gap-4 h-[180px] bg-white"
           >
-            <p className="text-[#4d4d4d]">{metric.label}</p>
+            <p className=" text-[#4d4d4d] flex items-center">
+              {metric.label}
+              {metric.key === "starting_knowledge_percentage" && (
+                <Image
+                  data-tooltip-id="info"
+                  data-tooltip-content={
+                    "Starting knowledge is when the user first started using the app."
+                  }
+                  src="/icons/info.svg"
+                  alt="Info"
+                  width={14}
+                  height={14}
+                  className="ml-2"
+                />
+              )}
+            </p>
+            <Tooltip id="info" place="top" />
 
             {metric.isNested && typeof rawValue === "object" ? (
-              <h1 className="font-bold py-6 text-2xl">
-                <span>{rawValue.current}</span>/
-                <span className="text-[#808080]">{rawValue.total}</span>
+              <h1 className="font-bold text-3xl">
+                <span>{rawValue.current}</span>
+                <span className="text-[#808080]">/{rawValue.total}</span>
               </h1>
             ) : (
-              <h1 className="font-bold py-6 text-2xl">{value}</h1>
+              <h1 className="font-bold text-3xl">{value}</h1>
             )}
+
             {metric.graph && (
-              <img src={metric.graph} alt="Graph" className="w-full" />
+              <div className="relative h-[60px] w-full">
+                <Image
+                  src={metric.graph}
+                  alt="Graph"
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
             )}
           </div>
         );

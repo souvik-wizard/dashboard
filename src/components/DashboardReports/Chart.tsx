@@ -1,3 +1,4 @@
+import { div } from "framer-motion/client";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 const CustomBackground = (props: any) => {
@@ -30,96 +31,75 @@ const ActivityChart = () => {
   //     fetchData();
   //   }, []);
   const chartData = [
-    {
-      month: "Jan",
-      value: 100,
-    },
-    {
-      month: "Feb",
-      value: 150,
-    },
-    {
-      month: "Mar",
-      value: 200,
-    },
-    {
-      month: "Apr",
-      value: 250,
-    },
-    {
-      month: "May",
-      value: 300,
-    },
-    {
-      month: "Jun",
-      value: 350,
-    },
-    {
-      month: "Jul",
-      value: 400,
-    },
-    {
-      month: "Aug",
-      value: 300,
-    },
-    {
-      month: "Sep",
-      value: 500,
-    },
-    {
-      month: "Oct",
-      value: 550,
-    },
-    {
-      month: "Nov",
-      value: 600,
-    },
-    {
-      month: "Dec",
-      value: 650,
-    },
+    { month: "JAN", value: 100 },
+    { month: "FEB", value: 150 },
+    { month: "MAR", value: 200 },
+    { month: "APR", value: 250 },
+    { month: "MAY", value: 300 },
+    { month: "JUN", value: 350 },
+    { month: "JUL", value: 400 },
+    { month: "AUG", value: 300 },
+    { month: "SEP", value: 500 },
+    { month: "OCT", value: 550 },
+    { month: "NOV", value: 600 },
+    { month: "DEC", value: 650 },
   ];
 
   return (
-    <div className="p-4 rounded-[20px] bg-white shadow-xl  w-full">
-      <div className="flex items-center justify-between border-b border-b-[#E4E5E7]  font-medium py-2">
-        <h1 className="text-[#4d4d4d]">Activity</h1>
-        <select name="sorting" id="activity">
-          <option value="month">Month</option>
-          <option value="week">Week</option>
-          <option value="year">Year</option>
-        </select>
-      </div>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer>
-          <BarChart
-            data={chartData}
-            margin={{ top: 20, right: 10, bottom: 30 }}
-            barSize={15}
+    <div className="max-w-screen overflow-auto md:w-full shadow-[0_2px_20px_rgba(0,0,0,0.08)] rounded-[20px]">
+      <div className="p-4 bg-white  md:w-full  w-[560px] overflow-x-auto">
+        <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+          <h1 className="text-sm sm:text-lg font-medium text-[#4d4d4d]">
+            Activity
+          </h1>
+          <select
+            name="sorting"
+            id="activity"
+            className="text-sm sm:text-base focus:outline-none bg-transparent"
           >
-            <XAxis
-              axisLine={false}
-              tickLine={false}
-              dataKey="month"
-              scale="point"
-              padding={{ left: 10, right: 10 }}
-              tickMargin={20}
-            />
-            <YAxis axisLine={false} tickLine={false} tickMargin={20} />
-            <Bar
-              dataKey="value"
-              fill="url(#blueGradient)"
-              background={<CustomBackground radius={10} />}
-              radius={10}
-            />
-            <defs>
-              <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1B59F8" stopOpacity={0.6} />
-                <stop offset="80%" stopColor="#1B59F8" stopOpacity={1} />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+            <option value="month">Month</option>
+            <option value="week">Week</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+
+        <div className="w-full h-[260px] sm:h-[320px] mt-4">
+          <ResponsiveContainer>
+            <BarChart
+              data={chartData}
+              margin={{ top: 20, right: 10, bottom: 20 }}
+              barSize={12}
+            >
+              <XAxis
+                axisLine={false}
+                tickLine={false}
+                dataKey="month"
+                scale="point"
+                padding={{ left: 10, right: 10 }}
+                tickMargin={8}
+                tick={{ fontSize: "0.75rem", fill: "#4d4d4d" }}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tickMargin={8}
+                tick={{ fontSize: "0.75rem", fill: "#4d4d4d" }}
+              />
+              <Bar
+                dataKey="value"
+                fill="url(#blueGradient)"
+                background={<CustomBackground radius={8} />}
+                radius={8}
+              />
+              <defs>
+                <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#1B59F8" stopOpacity={0.6} />
+                  <stop offset="80%" stopColor="#1B59F8" stopOpacity={0.8} />
+                </linearGradient>
+              </defs>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

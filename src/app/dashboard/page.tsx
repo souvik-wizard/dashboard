@@ -3,11 +3,9 @@ import Dashboard from "@/components/Reports";
 import Sidebar from "@/components/Sidebar";
 import React from "react";
 
-// type Props = {};
-
 const MainDashboard = () => {
   return (
-    <div className="flex">
+    <div className="flex h-screen w-screen">
       <Sidebar />
       <Dashboard />
     </div>
