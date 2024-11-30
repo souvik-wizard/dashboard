@@ -1,42 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
-
-type Props = {};
-
-interface Metrics {
-  active_users: {
-    current: number;
-    total: number;
-  };
-  questions_answered: number;
-  average_session_length_seconds: number;
-  starting_knowledge_percentage: number;
-  current_knowledge_percentage: number;
-}
-
-const data: { metrics: Metrics }[] = [
-  {
-    metrics: {
-      active_users: {
-        current: 27,
-        total: 80,
-      },
-      questions_answered: 3298,
-      average_session_length_seconds: 154,
-      starting_knowledge_percentage: 64,
-      current_knowledge_percentage: 86,
-    },
-  },
-];
-
-interface MetricMapping {
-  label: string;
-  key: keyof Metrics | "knowledge_gain";
-  isNested?: boolean;
-  format?: (value: any) => string;
-  graph?: string;
-}
+import {
+  Metrics as MetricsType,
+  MetricMapping,
+  MetricsProps,
+} from "../../types/types";
 
 const metricMappings: MetricMapping[] = [
   { label: "Active Users", key: "active_users", isNested: true },
@@ -74,11 +43,7 @@ const metricMappings: MetricMapping[] = [
   },
 ];
 
-const Metrics = (props: Props) => {
-  const metrics = data[0]?.metrics;
-
-  if (!metrics) return null;
-
+const Metrics = ({ metrics }: MetricsProps) => {
   const knowledgeGain =
     metrics.current_knowledge_percentage -
     metrics.starting_knowledge_percentage;
@@ -93,7 +58,7 @@ const Metrics = (props: Props) => {
         } else if (metric.isNested) {
           rawValue = metrics[metric.key as "active_users"];
         } else {
-          rawValue = metrics[metric.key as keyof Metrics];
+          rawValue = metrics[metric.key as keyof MetricsType];
         }
 
         const value = metric.format
@@ -105,7 +70,7 @@ const Metrics = (props: Props) => {
             key={metric.key}
             className="rounded-[20px] p-4 shadow-[0_2px_20px_rgba(0,0,0,0.08)] flex flex-col justify-start gap-4 h-[180px] bg-white"
           >
-            <p className=" text-[#4d4d4d] flex items-center">
+            <p className="text-[#4d4d4d] flex items-center">
               {metric.label}
               {metric.key === "starting_knowledge_percentage" && (
                 <Image

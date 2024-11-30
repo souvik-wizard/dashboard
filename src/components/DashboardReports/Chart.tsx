@@ -1,5 +1,5 @@
-import { div } from "framer-motion/client";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import type { ChartDataProps } from "@/types/types";
 
 const CustomBackground = (props: any) => {
   const { x, y, width, height, radius } = props;
@@ -16,35 +16,7 @@ const CustomBackground = (props: any) => {
   );
 };
 
-const ActivityChart = () => {
-  //   const [chartData, setChartData] = useState([]);
-
-  //   // Fetch data from API
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const response = await fetch('https://example.com/api/data'); // Replace with your API endpoint
-  //       const data = await response.json();
-  //       // Format data for Recharts if necessary
-  //       setChartData(data);
-  //     };
-
-  //     fetchData();
-  //   }, []);
-  const chartData = [
-    { month: "JAN", value: 100 },
-    { month: "FEB", value: 150 },
-    { month: "MAR", value: 200 },
-    { month: "APR", value: 250 },
-    { month: "MAY", value: 300 },
-    { month: "JUN", value: 350 },
-    { month: "JUL", value: 400 },
-    { month: "AUG", value: 300 },
-    { month: "SEP", value: 500 },
-    { month: "OCT", value: 550 },
-    { month: "NOV", value: 600 },
-    { month: "DEC", value: 650 },
-  ];
-
+const ActivityChart = (props: ChartDataProps) => {
   return (
     <div className="max-w-screen overflow-auto md:w-full shadow-[0_2px_20px_rgba(0,0,0,0.08)] rounded-[20px]">
       <div className="p-4 bg-white  md:w-full  w-[560px] overflow-x-auto">
@@ -66,7 +38,7 @@ const ActivityChart = () => {
         <div className="w-full h-[260px] sm:h-[320px] mt-4">
           <ResponsiveContainer>
             <BarChart
-              data={chartData}
+              data={props.data}
               margin={{ top: 20, right: 10, bottom: 20 }}
               barSize={12}
             >

@@ -30,7 +30,7 @@ export function SingleSelectionDropdown({
         onClick={() => setIsOpen(!isOpen)}
         className={` ${
           isOpen ? "rounded-t-[20px] " : "rounded-[20px]"
-        } flex text-lg font-medium text-[#808080] items-center justify-between w-full px-6 py-4 text-left bg-white  shadow-[0_2px_20px_rgba(0,0,0,0.08)]  focus:outline-none`}
+        } flex md:text-lg font-medium text-[#808080] items-center justify-between w-full px-6 py-4 text-left bg-white  shadow-[0_2px_20px_rgba(0,0,0,0.08)]  focus:outline-none`}
       >
         <p>
           {title}:{" "}

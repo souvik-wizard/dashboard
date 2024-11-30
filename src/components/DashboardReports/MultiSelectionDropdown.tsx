@@ -57,10 +57,10 @@ export function MultiSelectionDropdown({
         onClick={() => setIsOpen(!isOpen)}
         className={`${
           isOpen ? "rounded-t-[20px]" : "rounded-[20px]"
-        } flex items-center justify-between w-full px-6 py-4 text-left bg-white     shadow-[0_2px_20px_rgba(0,0,0,0.08)] `}
+        } flex items-center justify-between w-full px-6 py-4 text-left bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] `}
       >
         <div className="flex flex-col w-full">
-          <div className="flex items-center justify-between gap-2 text-[#808080] text-lg font-medium ">
+          <div className="flex items-center justify-between gap-2 text-[#808080] md:text-lg font-medium ">
             <p className="  font-semibold ">
               People:{" "}
               <span className="text-black">
@@ -69,15 +69,28 @@ export function MultiSelectionDropdown({
                   : "None Selected"}
               </span>
             </p>
-            <Image
-              src="/icons/Dropdown.svg"
-              alt="Chevron Down"
-              width={14}
-              height={14}
-              className={`transition-transform duration-200 ${
-                isOpen ? "" : "transform rotate-180"
-              }`}
-            />
+            <div className="flex items-center">
+              <Image
+                src="/icons/Dropdown.svg"
+                alt="Chevron Down"
+                width={14}
+                height={14}
+                className={`transition-transform duration-200 ${
+                  isOpen ? "" : "transform rotate-180"
+                }`}
+              />
+              {selectedOptions.length > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearAll();
+                  }}
+                  className="ml-4 md:text-base text-sm text-gray-500 hover:text-red-400"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
           </div>
           {selectedOptions.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-2">
@@ -105,17 +118,6 @@ export function MultiSelectionDropdown({
             </div>
           )}
         </div>
-        {selectedOptions.length > 0 && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              clearAll();
-            }}
-            className="ml-4 text-sm text-gray-500 hover:text-gray-700"
-          >
-            Clear
-          </button>
-        )}
       </button>
 
       <AnimatePresence>

@@ -1,115 +1,33 @@
-import Image from "next/image";
 import ActivityChart from "./DashboardReports/Chart";
 import { Leaderboard } from "./DashboardReports/Leaderboard";
 import Metrics from "./DashboardReports/Metrics";
 import { MultiSelectionDropdown } from "./DashboardReports/MultiSelectionDropdown";
 import { SingleSelectionDropdown } from "./DashboardReports/SingleSelectionDropdown";
 import Topic from "./DashboardReports/Topics";
+import Navbar from "./Navbar";
+import data from "../data/task-data.json";
 
-// type Props = {};
-
-const weakestTopics = [
+const SingleSelectionDropdownData = [
   {
-    name: "Food Safety",
-    image: "https://placehold.co/49x32",
-    correct_percentage: 74,
+    title: "Timeframe",
+    options: [
+      { id: "last-7-days", label: "Last 7 Days" },
+      { id: "this-month", label: "This Month" },
+      { id: "this-year", label: "This Year" },
+      { id: "custom", label: "Custom" },
+      { id: "all-time", label: "All-time" },
+    ],
   },
   {
-    name: "Compliance Basics Procedures",
-    image: "https://placehold.co/49x32",
-    correct_percentage: 52,
-  },
-  {
-    name: "Company Networking",
-    image: "https://placehold.co/49x32",
-    correct_percentage: 36,
+    title: "Topics",
+    options: [
+      { id: "all", label: "All" },
+      { id: "other", label: "Other" },
+    ],
   },
 ];
 
-const strongestTopics = [
-  {
-    name: "Covid Protocols",
-    image: "https://placehold.co/49x32",
-    correct_percentage: 95,
-  },
-  {
-    name: "Cyber Security Basics",
-    image: "https://placehold.co/49x32",
-    correct_percentage: 92,
-  },
-  {
-    name: "Social Media Policies",
-    image: "https://placehold.co/49x32",
-    correct_percentage: 89,
-  },
-];
-
-const userLeaderboard = [
-  {
-    name: "Jesse Thomas",
-    image: "https://placehold.co/64",
-    points: 637,
-    accuracy_percentage: 98,
-    previous_accuracy_percentage: 92,
-  },
-  {
-    name: "Thisal Mathiyazhagan",
-    image: "https://placehold.co/64",
-    points: 637,
-    accuracy_percentage: 89,
-    previous_accuracy_percentage: 94,
-  },
-  {
-    name: "Helen Chuang",
-    image: "https://placehold.co/64",
-    points: 637,
-    accuracy_percentage: 88,
-    previous_accuracy_percentage: 83,
-  },
-  {
-    name: "Lura Silverman",
-    image: "https://placehold.co/64",
-    points: 637,
-    accuracy_percentage: 86,
-    previous_accuracy_percentage: 80,
-  },
-];
-
-const groupLeaderboard = [
-  {
-    group_name: "Houston Facility",
-    points_per_user: 52,
-    accuracy_percentage: 97,
-    previous_accuracy_percentage: 92,
-  },
-  {
-    group_name: "Test Group",
-    points_per_user: 52,
-    accuracy_percentage: 95,
-    previous_accuracy_percentage: 93,
-  },
-  {
-    group_name: "Sales Leadership",
-    points_per_user: 52,
-    accuracy_percentage: 87,
-    previous_accuracy_percentage: 82,
-  },
-  {
-    group_name: "Northeast Region",
-    points_per_user: 52,
-    accuracy_percentage: 86,
-    previous_accuracy_percentage: 80,
-  },
-];
-const timeframeOptions = [
-  { id: "last-7-days", label: "Last 7 Days" },
-  { id: "this-month", label: "This Month" },
-  { id: "this-year", label: "This Year" },
-  { id: "custom", label: "Custom" },
-  { id: "all-time", label: "All-time" },
-];
-
-const sections = [
+const MultiSelectionDropdownData = [
   {
     title: "GROUPS",
     options: [
@@ -127,65 +45,50 @@ const sections = [
   },
 ];
 
-const topics = [
-  { id: "all", label: "All" },
-  { id: "other", label: "Other" },
-];
-
 const Dashboard = () => {
-  const downloadReportHandler = () => {};
+  const { metrics, activity, topics, groups_leaderboard, user_leaderboard } =
+    data;
 
   return (
     <div className="w-full px-4 lg:px-12 overflow-auto overflow-x-hidden">
-      <div className="flex justify-between items-center py-8 px-4 md:px-0 border-b">
-        <h1 className="text-lg lg:text-2xl font-bold ">Reports</h1>
-        <button
-          onClick={downloadReportHandler}
-          className="flex justify-center items-center gap-1 font-semibold text-[#4d4d4d] "
-        >
-          <Image
-            src="/icons/download.svg"
-            alt="Download"
-            width={20}
-            height={20}
-          />
-          Download
-        </button>
-      </div>
+      <Navbar />
       <div className="flex flex-col lg:flex-row justify-between w-full py-4 gap-4">
-        <SingleSelectionDropdown options={timeframeOptions} title="Timeframe" />
-        <MultiSelectionDropdown sections={sections} />
-        <SingleSelectionDropdown options={topics} title="Topics" />
+        <SingleSelectionDropdown
+          options={SingleSelectionDropdownData[0].options}
+          title={SingleSelectionDropdownData[0].title}
+        />
+        <MultiSelectionDropdown sections={MultiSelectionDropdownData} />
+        <SingleSelectionDropdown
+          options={SingleSelectionDropdownData[1].options}
+          title={SingleSelectionDropdownData[1].title}
+        />
       </div>
       <div className="flex flex-col-reverse lg:flex-row justify-between w-full py-4 gap-8">
-        <Metrics />
-
-        <ActivityChart />
+        <Metrics metrics={metrics} />
+        <ActivityChart data={activity.monthly} />
       </div>
+
       <div className="flex flex-col lg:flex-row justify-between w-full py-4 gap-8">
         <Topic
-          topics={weakestTopics}
+          topics={topics.weakest}
           colorScheme="red"
           title="Weakest Topics"
         />
         <Topic
-          topics={strongestTopics}
+          topics={topics.strongest}
           colorScheme="green"
-          title=" Strongest Topics"
+          title="Strongest Topics"
         />
       </div>
-      <div
-        className="flex flex-col lg:flex-row justify-between w-full py-4 gap-8
-      "
-      >
+      <div className="flex flex-col lg:flex-row justify-between w-full py-4 gap-8">
         <Leaderboard
           title="User Leaderboard"
-          data={userLeaderboard}
+          data={user_leaderboard}
           type="user"
         />
         <Leaderboard
           title="Group Leaderboard"
-          data={groupLeaderboard}
+          data={groups_leaderboard}
           type="group"
         />
       </div>

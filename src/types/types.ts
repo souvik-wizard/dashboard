@@ -47,3 +47,37 @@ export interface BaseLeaderboardEntry {
     sections: Section[];
     onSelectionChange?: (selections: string[]) => void;
   }
+
+export interface ChartData {
+    month: string;
+    value: number;
+  }
+
+  export interface ChartDataProps {
+    data: ChartData[];
+  }
+
+  export interface Metrics {
+    active_users: {
+      current: number;
+      total: number;
+    };
+    questions_answered: number;
+    average_session_length_seconds: number;
+    starting_knowledge_percentage: number;
+    current_knowledge_percentage: number;
+  }
+  
+  export interface MetricMapping {
+    label: string;
+    key: keyof Metrics | "knowledge_gain";
+    isNested?: boolean;
+    format?: (value: any) => string;
+    graph?: string;
+  }
+  
+  export interface MetricsProps {
+    metrics: Metrics;
+  }
+  
+  
