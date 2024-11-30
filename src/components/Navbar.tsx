@@ -34,7 +34,7 @@ const Navbar = () => {
         className="flex justify-center items-center gap-1 font-semibold text-[#4d4d4d] "
       >
         <Image
-          src="/icons/download.svg"
+          src="/icons/Download.svg"
           alt="Download"
           width={20}
           height={20}
