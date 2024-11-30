@@ -1,7 +1,7 @@
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 import data from "../../../data/task-data.json";
 
-export async function POST(req:NextApiRequest) {
+export async function POST(req: NextRequest) {
     const apiUrl = 'https://testd5-img.azurewebsites.net/api/imgdownload';
     const { api_secret } = data;
     try {
