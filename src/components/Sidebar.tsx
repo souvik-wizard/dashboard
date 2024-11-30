@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useScreenSize } from "../hooks/useScreenSize";
 
 const Sidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const isSmallScreen = useScreenSize();
   // console.log(isSmallScreen);
 
